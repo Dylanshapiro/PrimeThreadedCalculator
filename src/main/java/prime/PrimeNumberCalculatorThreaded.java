@@ -17,7 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
-public class PrimeNumberCalculatorThreaded extends JFrame {
+public class PrimeNumberCalculatorThreaded extends JFrame implements PrimeCalcViewInterface{
 
 
     private static final long serialVersionUID = 1L;
@@ -29,7 +29,7 @@ public class PrimeNumberCalculatorThreaded extends JFrame {
     private JLabel endNumberJLabel = new JLabel("End Number");
     private JTextField startNumber = new JTextField(16);
     private JTextField endNumber = new JTextField(16);
-    private SwingWorker<Boolean, Integer> worker;
+    private PrimeCalcSwingWorker worker;
     private static ExecutorService ex = Executors.newFixedThreadPool(16);
 
     public PrimeNumberCalculatorThreaded(String title) {
@@ -99,7 +99,6 @@ public class PrimeNumberCalculatorThreaded extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 worker.cancel(true);
-
             }
 
         });
@@ -109,99 +108,45 @@ public class PrimeNumberCalculatorThreaded extends JFrame {
     }
 
     private void start() {
-        int s = 0;
-        int t = 0;
-        try {
-            s = Integer.parseInt(startNumber.getText());
-            t = Integer.parseInt(endNumber.getText());
-        } catch (Exception e) {
-            statusJLabel.setText("idle : NumberFormatException");
-            startButton.setEnabled(true);
-            stopButton.setEnabled(false);
-            return;
-        }
-        if (s >= t) {
-            statusJLabel.setText("idle : start is >= end");
-            startButton.setEnabled(true);
-            stopButton.setEnabled(false);
-            return;
-        }
-        final int start = s;
-        final int threshold = t;
-
-        worker = new SwingWorker<Boolean, Integer>() {
-            @Override
-            protected Boolean doInBackground() throws Exception {
-                int numberOfPrimes = 0;
-
-                
-                Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>(threshold);
-                for (int num = start; num <= threshold; num++) {
-                    if (!isCancelled()) {
-                        futures.add(ex.submit(new PrimeCalculator(num)));
-                    }
-                    else {
-                        return false;
-                    }
-                }
-
-                for (Future<Boolean> future : futures) {
-                    if (!isCancelled()) {
-                        try {
-                            if (future.get()) {
-                                publish(++numberOfPrimes);
-                            }
-                        } catch (Exception e) {
-                            // TODO: handle exceptionY
-                        }
-                    } else {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-        
-
-            @Override
-            protected void process(List<Integer> chunks) {
-                if (!isCancelled()) {
-                    for (Integer integer : chunks) {
-                        count1.setText(Integer.toString(integer));
-                    }
-                }
-            }
-
-            @Override
-            protected void done() {
-
-                try {
-                    Boolean status = get();
-                    statusJLabel.setText("idle");
-                    startButton.setEnabled(true);
-                    stopButton.setEnabled(false);
-
-                } catch (CancellationException e) {
-                    statusJLabel.setText("idle : ended with Cancellation");
-                    startButton.setEnabled(true);
-                    stopButton.setEnabled(false);
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    statusJLabel.setText("idle : ended with Interrupt");
-                    startButton.setEnabled(true);
-                    stopButton.setEnabled(false);
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    statusJLabel.setText("idle");
-                    startButton.setEnabled(true);
-                    stopButton.setEnabled(false);
-                    e.printStackTrace();
-                }
-
-            }
-        };
+        worker = new PrimeCalcSwingWorker(ex,this);
+           
         worker.execute();
+    }
+
+
+    public void setLabelText(SwingJLabels label, String text){
+        switch (label) {
+            case COUNT1:
+                count1.setText(text);
+                break;
+            case STATUSJLABEL:
+                statusJLabel.setText(text);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public void setButtonEnabled(SwingJButtons button, Boolean enabled){
+        switch (button){
+            case STARTBUTTON:
+                startButton.setEnabled(enabled);
+                break;
+            case STOPBUTTON:
+                stopButton.setEnabled(enabled);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public int getStartingNumber(){
+            return Integer.parseInt(startNumber.getText());
+    }
+    
+    public int getEndingNumber(){
+            return Integer.parseInt(endNumber.getText());
     }
 
 }
