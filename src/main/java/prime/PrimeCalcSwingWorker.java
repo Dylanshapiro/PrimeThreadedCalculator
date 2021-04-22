@@ -30,10 +30,6 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
         final int end = getEndingNumber();
         final int start = getStartingNumber();
 
-        if (!checkStartAndEnd(start, end)){
-            return false;
-        }
-
         Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>(end-start+1);
         for (int num = start; num <= end; num++) {
             if (!isCancelled()) {
@@ -57,7 +53,6 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
                 return false;
             }
         }
-
         return true;
         }
     
@@ -70,6 +65,7 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
             for (Integer integer : chunks) {
                 gui.setLabelText(SwingJLabels.COUNT1,Integer.toString(integer));
             }
+            
         }
     }
 
@@ -78,27 +74,24 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
 
         try {
             Boolean status = get();
-            if(status){
                 gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
                 gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
-                gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");    
-            }
-            
+                gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");             
 
         } catch (CancellationException e) {
             gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
             gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
-            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");
+            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle : Cancellation");
             e.printStackTrace();
         } catch (InterruptedException e) {
             gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
             gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
-            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");
+            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle : Interrupted");
             e.printStackTrace();
         } catch (ExecutionException e) {
             gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
             gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
-            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");
+            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle : Exception");
             e.printStackTrace();
         }
 
@@ -126,13 +119,4 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
         return end;
     }
 
-    public Boolean checkStartAndEnd(int start,int end){
-        if (start >= end || start <0 || end <0) {
-            gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle : invalid input");
-            gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
-            gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
-            return false;
-        }
-        return true;
-    }
 }

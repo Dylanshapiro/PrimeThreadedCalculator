@@ -12,7 +12,7 @@ public class App
 
             @Override
             public void run() {
-                new PrimeNumberCalculatorThreaded("Threaded");
+                new PrimeCalcView("Threaded");
 
             }
 

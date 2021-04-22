@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class PrimeNumberCalculatorThreaded extends JFrame implements PrimeCalcViewInterface{
+public class PrimeCalcView extends JFrame implements PrimeCalcViewInterface{
 
 
     private static final long serialVersionUID = 1L;
@@ -26,7 +26,7 @@ public class PrimeNumberCalculatorThreaded extends JFrame implements PrimeCalcVi
     private PrimeCalcSwingWorker worker;
     private static ExecutorService ex = Executors.newFixedThreadPool(16);
 
-    public PrimeNumberCalculatorThreaded(String title) {
+    public PrimeCalcView(String title) {
         super(title);
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
@@ -78,10 +78,17 @@ public class PrimeNumberCalculatorThreaded extends JFrame implements PrimeCalcVi
 
             @Override
             public void actionPerformed(ActionEvent e) {
+                count1.setText("0");
+                if(!checkStartAndEnd(getStartingNumber(), getEndingNumber())){
+                    setLabelText(SwingJLabels.STATUSJLABEL,"idle : invalid input");
+                    setButtonEnabled(SwingJButtons.STARTBUTTON, true);
+                    setButtonEnabled(SwingJButtons.STOPBUTTON, false);
+                    return;
+                }
+
                 statusJLabel.setText("busy");
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
-                count1.setText("0");
                 start();
 
             }
@@ -136,11 +143,104 @@ public class PrimeNumberCalculatorThreaded extends JFrame implements PrimeCalcVi
     }
 
     public int getStartingNumber(){
-            return Integer.parseInt(startNumber.getText());
+        int end =-1;
+        try {
+            end =Integer.parseInt(startNumber.getText());
+        }
+        catch (Exception e ){
+        }
+        return end;
     }
     
     public int getEndingNumber(){
-            return Integer.parseInt(endNumber.getText());
+        int end =-1;
+        try {
+            end =Integer.parseInt(endNumber.getText());
+        }
+        catch (Exception e ){
+        }
+        return end;
     }
+
+
+    public JLabel getCount1() {
+        return this.count1;
+    }
+
+    public void setCount1(JLabel count1) {
+        this.count1 = count1;
+    }
+
+    public JLabel getStatusJLabel() {
+        return this.statusJLabel;
+    }
+
+    public void setStatusJLabel(JLabel statusJLabel) {
+        this.statusJLabel = statusJLabel;
+    }
+
+    public JButton getStartButton() {
+        return this.startButton;
+    }
+
+    public void setStartButton(JButton startButton) {
+        this.startButton = startButton;
+    }
+
+    public JButton getStopButton() {
+        return this.stopButton;
+    }
+
+    public void setStopButton(JButton stopButton) {
+        this.stopButton = stopButton;
+    }
+
+    public JLabel getStartNumberJLabel() {
+        return this.startNumberJLabel;
+    }
+
+    public void setStartNumberJLabel(JLabel startNumberJLabel) {
+        this.startNumberJLabel = startNumberJLabel;
+    }
+
+    public JLabel getEndNumberJLabel() {
+        return this.endNumberJLabel;
+    }
+
+    public void setEndNumberJLabel(JLabel endNumberJLabel) {
+        this.endNumberJLabel = endNumberJLabel;
+    }
+
+    public JTextField getStartNumber() {
+        return this.startNumber;
+    }
+
+    public void setStartNumber(JTextField startNumber) {
+        this.startNumber = startNumber;
+    }
+
+    public JTextField getEndNumber() {
+        return this.endNumber;
+    }
+
+    public void setEndNumber(JTextField endNumber) {
+        this.endNumber = endNumber;
+    }
+
+    public PrimeCalcSwingWorker getWorker() {
+        return this.worker;
+    }
+
+    public void setWorker(PrimeCalcSwingWorker worker) {
+        this.worker = worker;
+    }
+
+    public Boolean checkStartAndEnd(int start,int end){
+        if (start >= end || start <0 || end <0) {
+            return false;
+        }
+        return true;
+    }
+
 
 }
