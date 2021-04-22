@@ -3,8 +3,7 @@ package prime;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+
 
 import junit.framework.Test;
 import junit.framework.TestCase;

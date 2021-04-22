@@ -73,7 +73,7 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
     protected void done() {
 
         try {
-            Boolean status = get();
+            get();
                 gui.setButtonEnabled(SwingJButtons.STARTBUTTON, true);
                 gui.setButtonEnabled(SwingJButtons.STOPBUTTON, false);
                 gui.setLabelText(SwingJLabels.STATUSJLABEL,"idle");             
