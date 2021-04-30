@@ -2,7 +2,7 @@ package prime;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
+
 import java.util.stream.IntStream;
 import javax.swing.SwingWorker;
 
@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
  * PrimeCalcSwingWorker
  */
 public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
-    AtomicInteger numberOfPrimes = new AtomicInteger();
+    private int numberOfPrimes = 0;
     private PrimeCalcViewInterface gui;
 
     PrimeCalcSwingWorker( PrimeCalcViewInterface gui){
@@ -29,12 +29,11 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
         private Boolean isPrime(int n){
             if(!isCancelled()){
                 if(PrimeCalculator.isPrime(n)){
-                    publish(numberOfPrimes.incrementAndGet());
+                    publish(numberOfPrimes++);
                     return true;
                 }
             }
             return false;
-
         }
 
 
