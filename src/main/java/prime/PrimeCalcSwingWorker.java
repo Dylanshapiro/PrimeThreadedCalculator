@@ -6,6 +6,10 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
+
 
 import javax.swing.SwingWorker;
 
@@ -13,49 +17,33 @@ import javax.swing.SwingWorker;
  * PrimeCalcSwingWorker
  */
 public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
-    private ExecutorService ex;
+    AtomicInteger numberOfPrimes = new AtomicInteger();
     private PrimeCalcViewInterface gui;
 
-    PrimeCalcSwingWorker(ExecutorService ex, PrimeCalcViewInterface gui){
-        this.ex = ex;
+    PrimeCalcSwingWorker( PrimeCalcViewInterface gui){
         this.gui= gui;
     }
 
     @Override
     protected Boolean doInBackground() throws Exception {
-        int numberOfPrimes = 0;
-
-
-
         final int end = getEndingNumber();
         final int start = getStartingNumber();
-
-        Collection<Future<Boolean>> futures = new ArrayList<Future<Boolean>>(end-start+1);
-        for (int num = start; num <= end; num++) {
-            if (!isCancelled()) {
-                futures.add(ex.submit(new PrimeCalculator(num)));
-            }
-            else {
-                return false;
-            }
-        }
-
-        for (Future<Boolean> future : futures) {
-            if (!isCancelled()) {
-                try {
-                    if (future.get()) {
-                        publish(++numberOfPrimes);
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-            } else {
-                return false;
-            }
-        }
+        publish((int)IntStream.range(start,end+1).parallel().filter(argument -> isPrime(argument) == true).count());
         return true;
         }
     
+
+        private Boolean isPrime(int n){
+            if(!isCancelled()){
+                if(PrimeCalculator.isPrime(n)){
+                    publish(numberOfPrimes.incrementAndGet());
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
 
 
 

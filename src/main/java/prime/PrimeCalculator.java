@@ -1,15 +1,10 @@
 package prime;
-import java.util.concurrent.Callable;
 
-class PrimeCalculator implements Callable<Boolean> {
+class PrimeCalculator{
 
-    private int n =0;
-    PrimeCalculator(int n){
-        this.n = n;
-    }
+ 
 
-    private boolean isPrime() {
-        int n = this.n;
+    public static boolean isPrime(int n) {
         // Corner cases
         if (n <= 1)
             return false;
@@ -28,8 +23,5 @@ class PrimeCalculator implements Callable<Boolean> {
         return true;
     }
 
-    @Override
-    public Boolean call() throws Exception {
-        return isPrime();
-    }
+
 }

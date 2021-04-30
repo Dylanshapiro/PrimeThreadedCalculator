@@ -34,66 +34,48 @@ public class PrimeCalculatorTest
     public void testPrimeCalculator()
     {
         assertTrue( true );        
-        PrimeCalculator mCalculator = new PrimeCalculator(18);
-        try {
-            assertTrue(!mCalculator.call());
-        } catch (Exception e) {
-        //TODO: handle exception
-        }
+     
+            assertTrue(!PrimeCalculator.isPrime(18));
+        
     }
 
     public void testPrimeCalculator1()
     {
         assertTrue( true );
 
-        PrimeCalculator mCalculator = new PrimeCalculator(19);
-        try {
-            assertTrue(mCalculator.call());
-        } catch (Exception e) {
-        //TODO: handle exception
-        }
+        
+            assertTrue(PrimeCalculator.isPrime(19));
+        
     }
 
     public void testPrimeCalculator2()
     {
         assertTrue( true );
 
-        PrimeCalculator mCalculator = new PrimeCalculator(-1);
-        try {
-            assertTrue(!mCalculator.call());
-        } catch (Exception e) {
-        //TODO: handle exception
-        }
+
+            assertTrue( !PrimeCalculator.isPrime(-1));
+ 
     }
 
     public void testPrimeCalculator3()
     {
         assertTrue( true );
 
-        PrimeCalculator mCalculator = new PrimeCalculator(0);
-        try {
-            assertTrue(!mCalculator.call());
-        } catch (Exception e) {
-        //TODO: handle exception
-        }
+
+            assertTrue(! PrimeCalculator.isPrime(0));
+
     }
 
     public void testPrimeCalculator4()
     {
         assertTrue( true );
         int numberOfPrimes=0;
-        PrimeCalculator mCalculator;
         for(int i = 0; i<=1000000; i++){
-        mCalculator = new PrimeCalculator(i);
-            try {
-                if(mCalculator.call()){
+ 
+                if(PrimeCalculator.isPrime(i)){
                     numberOfPrimes++;
                 }
-            } catch (Exception e) {
-                
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+          
         }   
 
         assertEquals(78498,numberOfPrimes);

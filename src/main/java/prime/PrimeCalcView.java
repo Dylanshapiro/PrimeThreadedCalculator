@@ -24,7 +24,7 @@ public class PrimeCalcView extends JFrame implements PrimeCalcViewInterface{
     private JTextField startNumber = new JTextField(16);
     private JTextField endNumber = new JTextField(16);
     private PrimeCalcSwingWorker worker;
-    private static ExecutorService ex = Executors.newFixedThreadPool(16);
+
 
     public PrimeCalcView(String title) {
         super(title);
@@ -109,7 +109,7 @@ public class PrimeCalcView extends JFrame implements PrimeCalcViewInterface{
     }
 
     private void start() {
-        worker = new PrimeCalcSwingWorker(ex,this);
+        worker = new PrimeCalcSwingWorker(this);
            
         worker.execute();
     }

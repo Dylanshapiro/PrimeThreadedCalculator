@@ -70,18 +70,18 @@ public class PimeCalcViewTest extends TestCase{
     public void testPrimeCalcView(){
         assertTrue( true );
         testSetStartNumber("0");
-        testSetEndNumber("1000000");
+        testSetEndNumber("10000000");
         assertStatusEquals("idle");
         assertButtonEnabled(SwingJButtons.STARTBUTTON);
         assertButtonDisabled(SwingJButtons.STOPBUTTON);
         mCalculator.getStartButton().doClick();
         assertStatusEquals("busy");
-        sleep(300);
-        mCalculator.getStopButton().doClick();
         sleep(100);
+        mCalculator.getStopButton().doClick();
+        sleep(300);
         assertStatusEquals("idle : Cancellation");
         int result= Integer.parseInt(mCalculator.getCount1().getText());
-        assertTrue("Count is not greater than 0",0<result && result != 78498);
+        assertTrue("Count is not greater than 0",0<result && result != 664579);
         assertButtonEnabled(SwingJButtons.STARTBUTTON);
         assertButtonDisabled(SwingJButtons.STOPBUTTON);
 
