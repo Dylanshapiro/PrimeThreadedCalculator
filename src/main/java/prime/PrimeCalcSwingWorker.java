@@ -78,25 +78,11 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
     }
 
     public int getEndingNumber(){
-        int end =-1;
-        try {
-
-            end =gui.getEndingNumber();
-        }
-        catch (Exception e ){        
-        }
-        return end;
+        return gui.getEndingNumber();
     }
 
     public int getStartingNumber(){
-        int end =-1;
-        try {
-
-            end =gui.getStartingNumber();
-        }
-        catch (Exception e ){
-        }
-        return end;
+        return gui.getStartingNumber();
     }
 
 }
