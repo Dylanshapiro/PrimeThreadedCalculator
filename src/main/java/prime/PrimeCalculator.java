@@ -2,8 +2,6 @@ package prime;
 
 class PrimeCalculator{
 
- 
-
     public static boolean isPrime(int n) {
         // Corner cases
         if (n <= 1)
@@ -22,6 +20,4 @@ class PrimeCalculator{
 
         return true;
     }
-
-
 }

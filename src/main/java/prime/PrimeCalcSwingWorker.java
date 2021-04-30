@@ -1,16 +1,9 @@
 package prime;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
-
-
 import javax.swing.SwingWorker;
 
 /**
