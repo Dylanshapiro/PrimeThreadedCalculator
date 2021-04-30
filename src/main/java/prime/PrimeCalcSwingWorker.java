@@ -19,22 +19,23 @@ public class PrimeCalcSwingWorker extends SwingWorker<Boolean, Integer> {
 
     @Override
     protected Boolean doInBackground() throws Exception {
+        numberOfPrimes = 0;
         final int end = getEndingNumber();
         final int start = getStartingNumber();
         publish((int)IntStream.range(start,end+1).parallel().filter(argument -> isPrime(argument) == true).count());
         return true;
-        }
+    }
     
 
-        private Boolean isPrime(int n){
-            if(!isCancelled()){
-                if(PrimeCalculator.isPrime(n)){
-                    publish(numberOfPrimes++);
-                    return true;
-                }
+    private Boolean isPrime(int n){
+        if(!isCancelled()){
+            if(PrimeCalculator.isPrime(n)){
+                publish(numberOfPrimes++);
+                return true;
             }
-            return false;
         }
+        return false;
+    }
 
 
 
